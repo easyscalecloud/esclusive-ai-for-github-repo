@@ -25,5 +25,5 @@ jobs:
           curl -fsSL https://github.com/easyscalecloud/esclusive-ai-for-github-repo/releases/download/0.1.1/esclusive_ai_for_github_repo.py -o tmp/esclusive_ai_for_github_repo.py
           curl -fsSL https://github.com/easyscalecloud/esclusive-ai-for-github-repo/releases/download/0.1.1/requirements.txt -o tmp/requirements.txt
           curl -fsSL https://github.com/easyscalecloud/esclusive-ai-for-github-repo/releases/download/0.1.1/prompt.md -o tmp/prompt.md
-          pip3 install -r tmp/requirements.txt
+          pip3 install -q -r tmp/requirements.txt
           python3 tmp/esclusive_ai_for_github_repo.py
