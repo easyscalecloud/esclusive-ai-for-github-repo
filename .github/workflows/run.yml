@@ -19,6 +19,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -xe
           mkdir -p tmp
           curl -fsSL https://github.com/easyscalecloud/esclusive-ai-for-github-repo/releases/download/0.1.1/esclusive_ai_for_github_repo.py -o tmp/esclusive_ai_for_github_repo.py
           curl -fsSL https://github.com/easyscalecloud/esclusive-ai-for-github-repo/releases/download/0.1.1/requirements.txt -o tmp/requirements.txt
