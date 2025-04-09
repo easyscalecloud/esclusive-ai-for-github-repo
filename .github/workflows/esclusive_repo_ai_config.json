@@ -1,0 +1,10 @@
+{
+    "include": [
+        "README.rst",
+        "esclusive_ai_for_github_repo.py",
+        ".github/workflows/**.*"
+    ],
+    "exclude": [
+        ".venv/"
+    ]
+}
