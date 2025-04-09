@@ -254,6 +254,15 @@ if __name__ == "__main__":
         dir_project_root=Path.cwd().absolute(),
         path_python_executable=Path(sys.executable).absolute(),
     )
+    print(f"{paths.dir_project_root = !s}")
+    print(f"{paths.dir_bin = !s}")
+    print(f"{paths.path_python_executable = !s}")
+    print(f"{paths.path_bin_pip = !s}")
+    print(f"{paths.path_esclusive_ai_for_github_repo_config_json = !s}")
+    print(f"{paths.dir_tmp = !s}")
+    print(f"{paths.dir_knowledge_base = !s}")
+    print(f"{paths.path_all_in_one_knowledge_base = !s}")
+    print(f"{paths.path_prompt_md = !s}")
     shutil.rmtree(paths.dir_tmp, ignore_errors=True)
     paths.dir_tmp.mkdir(exist_ok=True)
     config = Config.from_json(paths.path_esclusive_ai_for_github_repo_config_json)
