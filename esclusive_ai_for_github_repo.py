@@ -263,8 +263,6 @@ if __name__ == "__main__":
     print(f"{paths.dir_knowledge_base = !s}")
     print(f"{paths.path_all_in_one_knowledge_base = !s}")
     print(f"{paths.path_prompt_md = !s}")
-    shutil.rmtree(paths.dir_tmp, ignore_errors=True)
-    paths.dir_tmp.mkdir(exist_ok=True)
     config = Config.from_json(paths.path_esclusive_ai_for_github_repo_config_json)
     build_knowledge_base(paths=paths, config=config)
     publish_knowledge_base(paths=paths)
