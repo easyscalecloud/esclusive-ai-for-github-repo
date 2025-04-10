@@ -2,6 +2,10 @@
 
 """
 Publish esclusive_repo_ai to GitHub as a release.
+
+This script automates the process of creating or updating GitHub releases with
+the latest version of the esclusive_ai_for_github_repo tool. It handles tag and
+release management and uploads the necessary files as downloadable assets.
 """
 
 import typing as T
@@ -43,6 +47,9 @@ repo = gh.get_repo(f"{account_name}/{repo_name}")
 
 
 def get_latest_commit_sha() -> str:
+    """
+    Get the SHA of the latest commit on the default branch.
+    """
     return repo.get_branch(repo.default_branch).commit.sha
 
 
@@ -50,6 +57,13 @@ def get_git_tag_and_ref(tag_name: str) -> tuple[
     T.Optional["GitTag"],
     T.Optional["GitRef"],
 ]:
+    """
+    Get the Git tag and reference objects for a given tag name.
+
+    :param tag_name: The name of the tag to retrieve.
+
+    :return: A tuple containing the GitTag and GitRef objects, or None if not found.
+    """
     try:
         ref = repo.get_git_ref(f"tags/{tag_name}")
     except GithubException as e:
@@ -77,7 +91,9 @@ def get_git_tag_and_ref(tag_name: str) -> tuple[
 
 def get_git_release(release_name: str) -> T.Optional["GitRelease"]:
     """
-    :param release_name:
+    Get the GitRelease object for a given release name.
+
+    :param release_name: the name of the release to retrieve.
 
     :return: GitRelease object or None if not found
     """
@@ -99,7 +115,7 @@ def is_tag_latest_on_main(tag_name: str) -> tuple[
     T.Optional[str],
 ]:
     """
-    Check if the tag is the latest on the main branch.
+    Check if the tag points to the latest commit on the main branch.
 
     :returns: a tuple of four elements:
     """
@@ -114,6 +130,8 @@ def is_tag_latest_on_main(tag_name: str) -> tuple[
 
 def clean_up_existing_release(release_name: str) -> bool:
     """
+    Delete an existing release if it exists.
+
     :returns: a boolean flag to indicate whether the operation is performed.
     """
     release = get_git_release(release_name)
@@ -126,6 +144,8 @@ def clean_up_existing_release(release_name: str) -> bool:
 
 def clean_up_existing_tag(tag_name: str) -> bool:
     """
+    Delete an existing tag if it exists.
+
     :returns: a boolean flag to indicate whether the operation is performed.
     """
     try:
@@ -143,6 +163,9 @@ def create_tag(
     tag_name: str,
     latest_commit_sha: T.Optional[str] = None,
 ) -> tuple["GitTag", "GitRef"]:
+    """
+    Create a new Git tag pointing to the latest commit.
+    """
     if latest_commit_sha is None:
         latest_commit_sha = get_latest_commit_sha()
     tag = repo.create_git_tag(
@@ -159,6 +182,12 @@ def create_tag(
 
 
 def create_release(tag_name: str, release_name: str) -> "GitRelease":
+    """
+    Create a new GitHub release for a tag.
+    :param tag_name:
+    :param release_name:
+    :return:
+    """
     return repo.create_git_release(
         tag=tag_name,
         name=release_name,
@@ -176,7 +205,10 @@ def update_release(
     T.Optional["GitRelease"],
 ]:
     """
-    Update the GitHub release and tag.
+    Update the GitHub release and tag to point to the latest commit.
+
+    This function handles the core logic of ensuring that the release
+    tag always points to the latest code, creating or updating as needed.
 
     :returns: a boolean flag to indicate whether the operation is performed.
     """
@@ -205,6 +237,12 @@ def update_assets(
     release: "GitRelease",
     path_list: T.List[Path],
 ):
+    """
+    Update the assets attached to a GitHub release.
+
+    This function ensures that the specified files are attached to the
+    release, replacing any existing assets with the same names.
+    """
     filename_set = {path.name for path in path_list}
     for asset in release.get_assets():
         if asset.name in filename_set:

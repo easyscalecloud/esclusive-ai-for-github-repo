@@ -78,6 +78,14 @@ def get_url_content(url: str) -> str:
         return response.read().decode("utf-8").strip()
 
 
+def write_text(path: Path, text: str):
+    try:
+        path.write_text(text, encoding="utf-8")
+    except FileNotFoundError:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+
+
 @dataclasses.dataclass
 class Paths:
     """
@@ -224,7 +232,7 @@ def build_knowledge_base(
         content = "\n".join(lines)
         path_asset = paths.dir_document_groups.joinpath(group.asset_name)
         print(f"Write to asset file {path_asset}...")
-        path_asset.write_text(content, encoding="utf-8")
+        write_text(path_asset, content)
 
 
 def create_tag(repo: Repository):
@@ -298,7 +306,7 @@ def upload_assets(
         if group.asset_name in existing_assets:
             existing_assets[group.asset_name].delete_asset()
         release.upload_asset(
-            path=paths.dir_document_groups.joinpath(group.asset_name),
+            path=f"{paths.dir_document_groups.joinpath(group.asset_name)}",
             label=file_label,
         )
 
@@ -322,15 +330,15 @@ if __name__ == "__main__":
         dir_project_root=Path.cwd().absolute(),
         path_python_executable=Path(sys.executable).absolute(),
     )
-    print(f"{paths.dir_project_root = !s:>50}")
-    print(f"{paths.dir_bin = !s:>50}")
-    print(f"{paths.path_python_executable = !s:>50}")
-    print(f"{paths.path_bin_pip = !s:>50}")
-    print(f"{paths.path_esclusive_ai_for_github_repo_config_json = !s:>50}")
-    print(f"{paths.dir_tmp = !s:>50}")
-    print(f"{paths.dir_staging = !s:>50}")
-    print(f"{paths.dir_document_groups = !s:>50}")
-    print(f"{paths.path_prompt_md = !s:>50}")
+    print(f"dir_project_root                              = {paths.dir_project_root}")
+    print(f"dir_bin                                       = {paths.dir_bin}")
+    print(f"path_python_executable                        = {paths.path_python_executable}")
+    print(f"path_bin_pip                                  = {paths.path_bin_pip}")
+    print(f"path_esclusive_ai_for_github_repo_config_json = {paths.path_esclusive_ai_for_github_repo_config_json}")
+    print(f"dir_tmp                                       = {paths.dir_tmp}")
+    print(f"dir_staging                                   = {paths.dir_staging}")
+    print(f"dir_document_groups                           = {paths.dir_document_groups}")
+    print(f"path_prompt_md                                = {paths.path_prompt_md}")
     config = Config.from_json(paths.path_esclusive_ai_for_github_repo_config_json)
     build_knowledge_base(paths=paths, config=config)
     publish_knowledge_base(paths=paths, config=config)
