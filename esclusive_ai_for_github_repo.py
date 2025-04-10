@@ -18,16 +18,22 @@
 """
 Knowledge Base Builder for GitHub Repositories.
 
-This tools to fetch and consolidate documentation from one GitHub repository
-into a single knowledge base file. It handles file filtering,
-and content extraction using the ``docpack`` library.
+A tool that fetches and consolidates documentation from GitHub repositories
+into knowledge base files for AI-powered assistance. This allows repository
+owners to create searchable knowledge bases without complex setup.
 
-The main workflow:
+Key features:
 
-1. Load configuration from a JSON file
+- Configurable file inclusion/exclusion via pattern matching
+- Automatic GitHub release publishing with knowledge base assets
+- CI/CD integration via GitHub Actions
+
+Main workflow:
+
+1. Load configuration from JSON file
 2. Extract files matching include/exclude patterns
-3. Combine all content into a single knowledge base file
-4. Publish the knowledge base file to GitHub as a release
+3. Process and combine content into knowledge base file(s)
+4. Publish knowledge base file(s) to GitHub as release assets
 """
 
 import typing as T
@@ -77,13 +83,27 @@ class Paths:
     """
     Path manager for the knowledge base builder.
 
-    This class handles all file paths and directory structures used by the knowledge base
-    builder, including temporary files, output locations, and dependency management.
+    Centralizes all file path handling to ensure consistent locations for
+    inputs, outputs, and temporary files across the application. This prevents
+    hardcoded paths and makes directory structure changes easier to implement.
+
+    Directory structure:
 
     .. code-block:: bash
-
-        /project_root               # dir_project_root
-        /project_root/tmp               # dir_tmp
+        git_repo/
+        git_repo/.github/workflows/esclusive_ai_for_github_repo_config.json
+        git_repo/tmp/
+        git_repo/tmp/esclusive_ai_for_github_repo.py
+        git_repo/tmp/requirements.txt
+        git_repo/tmp/prompt.md
+        git_repo/tmp/staging/
+        git_repo/tmp/staging/${file_1}.xml
+        git_repo/tmp/staging/${file_2}.xml
+        git_repo/tmp/staging/...
+        git_repo/tmp/document_groups/
+        git_repo/tmp/document_groups/${group_name_1}.txt
+        git_repo/tmp/document_groups/${group_name_2}.txt
+        git_repo/tmp/document_groups/...
     """
 
     dir_project_root: Path = dataclasses.field()
@@ -110,6 +130,7 @@ class Paths:
 
     @property
     def path_esclusive_ai_for_github_repo_config_json(self) -> Path:
+        """Path to the configuration JSON file."""
         return self.dir_project_root.joinpath(
             ".github",
             "workflows",
@@ -118,7 +139,7 @@ class Paths:
 
     @property
     def path_prompt_md(self) -> Path:
-        """Path to the prompt.md file for AI Prompt."""
+        """Path to the ``prompt.md`` file for AI Prompt."""
         return self.dir_tmp / "prompt.md"
 
     @property
@@ -175,8 +196,8 @@ def build_knowledge_base(
     """
     Build the knowledge base from all configured sources.
 
-    1. Extract documentation from the GitHub repository.
-    2. Combine all extracted files into a single knowledge base file.
+    This is the main processing function that extracts content from
+    the repository and combines it into a single knowledge base file.
     """
     print("=== Build knowledge base")
     for group in config.document_groups:
@@ -202,10 +223,17 @@ def build_knowledge_base(
             lines.append(path.read_text(encoding="utf-8"))
         content = "\n".join(lines)
         path_asset = paths.dir_document_groups.joinpath(group.asset_name)
+        print(f"Write to asset file {path_asset}...")
         path_asset.write_text(content, encoding="utf-8")
 
 
 def create_tag(repo: Repository):
+    """
+    Create a Git tag for the knowledge base release.
+
+    Creates a tag pointing to the latest commit on the default branch,
+    which will be used for the GitHub release.
+    """
     default_branch = repo.default_branch
     commit = repo.get_branch(default_branch).commit
     commit_sha = commit.sha
@@ -222,6 +250,12 @@ def create_tag(repo: Repository):
 
 
 def create_release(repo: Repository):
+    """
+    Create or get the GitHub release for publishing the knowledge base.
+
+    Checks if a release with the specified name already exists.
+    If not, creates a new one.
+    """
     print(f"--- Create release {release_name!r} if not exists ...")
     try:
         release = repo.get_release(release_name)
@@ -249,6 +283,12 @@ def upload_assets(
     paths: Paths,
     config: "Config",
 ):
+    """
+    Upload knowledge base files as assets to the GitHub release.
+
+    Replaces any existing assets with the same names to ensure
+    the release always has the latest versions of all document groups.
+    """
     print("--- Publish all in one knowledge base")
     file_label = "all_in_one_knowledge_base.txt"
     existing_assets: dict[str, GitReleaseAsset] = {
@@ -264,6 +304,12 @@ def upload_assets(
 
 
 def publish_knowledge_base(paths: Paths, config: "Config"):
+    """
+    Publish all document group files to GitHub releases.
+
+    This is the main publishing function that handles GitHub authentication,
+    release creation, and asset uploading for all document groups.
+    """
     print("=== Publish knowledge base")
     gh = Github(GITHUB_TOKEN)
     repo = gh.get_repo(GITHUB_REPOSITORY)
@@ -276,15 +322,15 @@ if __name__ == "__main__":
         dir_project_root=Path.cwd().absolute(),
         path_python_executable=Path(sys.executable).absolute(),
     )
-    print(f"{paths.dir_project_root = !s}")
-    print(f"{paths.dir_bin = !s}")
-    print(f"{paths.path_python_executable = !s}")
-    print(f"{paths.path_bin_pip = !s}")
-    print(f"{paths.path_esclusive_ai_for_github_repo_config_json = !s}")
-    print(f"{paths.dir_tmp = !s}")
-    print(f"{paths.dir_staging = !s}")
-    print(f"{paths.dir_document_groups = !s}")
-    print(f"{paths.path_prompt_md = !s}")
+    print(f"{paths.dir_project_root = !s:>50}")
+    print(f"{paths.dir_bin = !s:>50}")
+    print(f"{paths.path_python_executable = !s:>50}")
+    print(f"{paths.path_bin_pip = !s:>50}")
+    print(f"{paths.path_esclusive_ai_for_github_repo_config_json = !s:>50}")
+    print(f"{paths.dir_tmp = !s:>50}")
+    print(f"{paths.dir_staging = !s:>50}")
+    print(f"{paths.dir_document_groups = !s:>50}")
+    print(f"{paths.path_prompt_md = !s:>50}")
     config = Config.from_json(paths.path_esclusive_ai_for_github_repo_config_json)
     build_knowledge_base(paths=paths, config=config)
     publish_knowledge_base(paths=paths, config=config)
