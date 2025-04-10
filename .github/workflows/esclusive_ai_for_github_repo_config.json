@@ -1,10 +1,31 @@
 {
-    "include": [
-        "README.rst",
-        "esclusive_ai_for_github_repo.py",
-        ".github/workflows/**.*"
-    ],
-    "exclude": [
-        ".venv/"
+    "document_groups": [
+        {
+            "name": "all",
+            "include": [
+                "README.rst",
+                "esclusive_ai_for_github_repo.py",
+                ".github/workflows/**.*"
+            ],
+            "exclude": [
+                ".venv/"
+            ]
+        },
+        {
+            "name": "python",
+            "include": [
+                "esclusive_ai_for_github_repo.py"
+            ],
+            "exclude": [
+            ]
+        },
+        {
+            "name": "document",
+            "include": [
+                "README.rst"
+            ],
+            "exclude": [
+            ]
+        }
     ]
 }

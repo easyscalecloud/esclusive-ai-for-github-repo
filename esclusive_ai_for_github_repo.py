@@ -40,7 +40,7 @@ from pathlib import Path
 from urllib import request
 from functools import cached_property
 
-from github import Github, GithubException, Repository
+from github import Github, GithubException, Repository, GitReleaseAsset
 from docpack.api import GitHubPipeline
 
 __version__ = "0.1.1"
@@ -122,14 +122,25 @@ class Paths:
         return self.dir_tmp / "prompt.md"
 
     @property
-    def dir_knowledge_base(self):
-        """Directory where knowledge base files will be stored."""
-        return self.dir_tmp / "knowledge_base"
+    def dir_staging(self):
+        """Directory where staging files will be stored."""
+        return self.dir_tmp / "staging"
 
     @property
-    def path_all_in_one_knowledge_base(self) -> Path:
+    def dir_document_groups(self) -> Path:
         """Path to the consolidated knowledge base output file."""
-        return self.dir_knowledge_base / "all_in_one_knowledge_base.txt"
+        return self.dir_tmp / "document_groups"
+
+
+@dataclasses.dataclass
+class DocumentGroup:
+    name: str = dataclasses.field()
+    include: list[str] = dataclasses.field()
+    exclude: list[str] = dataclasses.field()
+
+    @property
+    def asset_name(self) -> str:
+        return f"{self.name}.txt"
 
 
 @dataclasses.dataclass
@@ -138,11 +149,13 @@ class Config:
     Configuration for the knowledge base builder.
     """
 
-    include: list[str] = dataclasses.field()
-    exclude: list[str] = dataclasses.field()
+    document_groups: list[DocumentGroup] = dataclasses.field()
 
     @classmethod
     def from_dict(cls, dct: dict[str, T.Any]):
+        dct["document_groups"] = [
+            DocumentGroup(**dct) for dct in dct.get("document_groups", [])
+        ]
         return cls(**dct)
 
     @classmethod
@@ -166,25 +179,30 @@ def build_knowledge_base(
     2. Combine all extracted files into a single knowledge base file.
     """
     print("=== Build knowledge base")
-    print("--- Extract documents from git repo ...")
-    github_pipeline = GitHubPipeline(
-        domain=GITHUB_SERVER_URL,
-        account=ACC_NAME,
-        repo=REPO_NAME,
-        branch=GITHUB_REF_NAME,
-        dir_repo=paths.dir_project_root,
-        include=config.include,
-        exclude=config.exclude,
-        dir_out=paths.dir_knowledge_base,
-    )
-    github_pipeline.fetch()
-    print("--- Combine documents into a single file ...")
-    prompt = paths.path_prompt_md.read_text(encoding="utf-8")
-    lines = [prompt]
-    for path in paths.dir_knowledge_base.glob("*.xml"):
-        lines.append(path.read_text(encoding="utf-8"))
-    content = "\n".join(lines)
-    paths.path_all_in_one_knowledge_base.write_text(content, encoding="utf-8")
+    for group in config.document_groups:
+        print(f"--- processing document group {group.name!r}")
+        print("Extract documents from git repo ...")
+        # Clean up the staging directory to get a fresh start
+        shutil.rmtree(paths.dir_staging, ignore_errors=True)
+        github_pipeline = GitHubPipeline(
+            domain=GITHUB_SERVER_URL,
+            account=ACC_NAME,
+            repo=REPO_NAME,
+            branch=GITHUB_REF_NAME,
+            dir_repo=paths.dir_project_root,
+            include=group.include,
+            exclude=group.exclude,
+            dir_out=paths.dir_staging,
+        )
+        github_pipeline.fetch()
+        print("Combine documents into a single file ...")
+        prompt = paths.path_prompt_md.read_text(encoding="utf-8")
+        lines = [prompt]
+        for path in paths.dir_staging.glob("*.xml"):
+            lines.append(path.read_text(encoding="utf-8"))
+        content = "\n".join(lines)
+        path_asset = paths.dir_document_groups.joinpath(group.asset_name)
+        path_asset.write_text(content, encoding="utf-8")
 
 
 def create_tag(repo: Repository):
@@ -229,24 +247,28 @@ def create_release(repo: Repository):
 def upload_assets(
     release: Repository,
     paths: Paths,
+    config: "Config",
 ):
     print("--- Publish all in one knowledge base")
     file_label = "all_in_one_knowledge_base.txt"
-    for asset in release.get_assets():
-        if asset.name == file_label:
-            asset.delete_asset()
-    release.upload_asset(
-        path=f"{paths.path_all_in_one_knowledge_base}",
-        label=file_label,
-    )
+    existing_assets: dict[str, GitReleaseAsset] = {
+        asset.name: asset for asset in release.get_assets()
+    }
+    for group in config.document_groups:
+        if group.asset_name in existing_assets:
+            existing_assets[group.asset_name].delete_asset()
+        release.upload_asset(
+            path=paths.dir_document_groups.joinpath(group.asset_name),
+            label=file_label,
+        )
 
 
-def publish_knowledge_base(paths: Paths):
+def publish_knowledge_base(paths: Paths, config: "Config"):
     print("=== Publish knowledge base")
     gh = Github(GITHUB_TOKEN)
     repo = gh.get_repo(GITHUB_REPOSITORY)
     release = create_release(repo)
-    upload_assets(release=release, paths=paths)
+    upload_assets(release=release, paths=paths, config=config)
 
 
 if __name__ == "__main__":
@@ -260,9 +282,9 @@ if __name__ == "__main__":
     print(f"{paths.path_bin_pip = !s}")
     print(f"{paths.path_esclusive_ai_for_github_repo_config_json = !s}")
     print(f"{paths.dir_tmp = !s}")
-    print(f"{paths.dir_knowledge_base = !s}")
-    print(f"{paths.path_all_in_one_knowledge_base = !s}")
+    print(f"{paths.dir_staging = !s}")
+    print(f"{paths.dir_document_groups = !s}")
     print(f"{paths.path_prompt_md = !s}")
     config = Config.from_json(paths.path_esclusive_ai_for_github_repo_config_json)
     build_knowledge_base(paths=paths, config=config)
-    publish_knowledge_base(paths=paths)
+    publish_knowledge_base(paths=paths, config=config)
