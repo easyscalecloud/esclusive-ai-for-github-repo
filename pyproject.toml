@@ -139,7 +139,7 @@ codecov_account = "easyscalecloud"
 # ``${HOME}/.codecov/github/${codecov_account}/${codecov_token_name}.txt``
 codecov_token_name = "sanhe-dev"
 # readthedocs.org user name (for documentation hosting)
-readthedocs_username = "machugwu"
+readthedocs_username = "escsanhe"
 # Readthedocs project name, usually it is the same as your project name
 readthedocs_project_name = "esclusive_ai_for_github_repo"
 # Create Readthedocs token in https://app.readthedocs.org/accounts/tokens/ and put the token at
