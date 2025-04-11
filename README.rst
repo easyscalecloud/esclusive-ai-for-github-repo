@@ -144,14 +144,6 @@ Just drag and drop the generated file into your AI chat interface, and instantly
 
 About the Name "ESClusive AI"
 ------------------------------------------------------------------------------
-The "ESC" in ESClusive AI stands for EasyScaleCloud, the company behind this innovative tool. The name cleverly merges our company identity with "Exclusive AI" - highlighting our commitment to data privacy and security.
-
-"ESClusive" reflects our core philosophy: your code and data never leave your own ecosystem. This makes our solution especially friendly to enterprise environments with strict security requirements and data governance policies, where sending code to external AI services may not be permitted.
-Unlike other AI-code integration approaches that require API connections to external services, ESClusive AI creates self-contained knowledge bases that work with any AI assistant - keeping your intellectual property under your control at all times.
-
-
-About the Name "ESClusive AI"
-------------------------------------------------------------------------------
 The "ESC" in ESClusive AI stands for `EasyScaleCloud <https://www.easyscalecloud.com/products/esclusive-ai>`_, the company behind this innovative tool. The name merges our company identity with "Exclusive AI" - highlighting our commitment to data privacy and security.
 
 "ESClusive" reflects our core philosophy: your code and data never leave your own ecosystem. This makes our solution especially friendly to enterprise environments with strict security requirements and data governance policies, where sending code to external AI services may not be permitted.
