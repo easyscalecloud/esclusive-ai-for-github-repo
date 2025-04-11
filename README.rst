@@ -5,8 +5,8 @@
 .. image:: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/actions/workflows/main.yml/badge.svg
     :target: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/actions?query=workflow:CI
 
-.. image:: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/actions/workflows/main.yml/badge.svg
-    :target: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/actions?query=workflow:CI
+.. image:: https://codecov.io/gh/easyscalecloud/esclusive-ai-for-github-repo/branch/main/graph/badge.svg
+    :target: https://codecov.io/gh/easyscalecloud/esclusive-ai-for-github-repo
 
 .. image:: https://img.shields.io/badge/License-AGPL--3.0-blue.svg
     :target: https://www.gnu.org/licenses/agpl-3.0
