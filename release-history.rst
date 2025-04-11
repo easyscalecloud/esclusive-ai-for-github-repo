@@ -15,6 +15,9 @@ x.y.z (Backlog)
 **Miscellaneous**
 
 
-0.1.1 (1970-01-01)
+0.1.1 (2025-04-11)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- First release
+- First release.
+- Add support for GitHub public repo and private repo.
+- Use GitHub Actions to run the ESClusive AI program.
+- Use GitHub Release to host the knowledge base.
