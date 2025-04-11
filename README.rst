@@ -6,6 +6,8 @@
 
 ✨ ESClusive AI for GitHub Repo
 ==============================================================================
+.. image:: https://esclusive-ai-for-github-repo.readthedocs.io/en/latest/_static/esclusive_ai_for_github_repo-cover-1536x1024.png
+    :target: https://esclusive-ai-for-github-repo.readthedocs.io/en/latest/
 
 
 🌉 The Missing Bridge Between Your Code and AI
