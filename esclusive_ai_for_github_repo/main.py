@@ -70,7 +70,7 @@ if IS_CI:
     GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
 
 
-def get_url_content(url: str) -> str:
+def get_url_content(url: str) -> str:  # pragma: no cover
     """
     Fetch and return the content of a URL as a string.
     """
@@ -81,7 +81,7 @@ def get_url_content(url: str) -> str:
 def write_text(path: Path, text: str):
     try:
         path.write_text(text, encoding="utf-8")
-    except FileNotFoundError:
+    except FileNotFoundError:  # pragma: no cover
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text, encoding="utf-8")
 
@@ -117,16 +117,6 @@ class Paths:
     dir_project_root: Path = dataclasses.field()
     path_python_executable: Path = dataclasses.field()
 
-    @property
-    def dir_bin(self) -> Path:
-        """Directory containing the Python executable and pip."""
-        return self.path_python_executable.parent
-
-    @property
-    def path_bin_pip(self) -> Path:
-        """Path to the pip executable."""
-        return self.dir_bin / "pip"
-
     @cached_property
     def dir_tmp(self) -> Path:
         """
@@ -137,7 +127,7 @@ class Paths:
         return dir_tmp
 
     @property
-    def path_esclusive_ai_for_github_repo_config_json(self) -> Path:
+    def path_esclusive_ai_for_github_repo_config_json(self) -> Path:  # pragma: no cover
         """Path to the configuration JSON file."""
         return self.dir_project_root.joinpath(
             ".github",
@@ -188,7 +178,7 @@ class Config:
         return cls(**dct)
 
     @classmethod
-    def from_json(cls, path_config: Path):
+    def from_json(cls, path_config: Path):  # pragma: no cover
         print("=== Load config")
         print(f"load config from {path_config}")
         dct = json.loads(path_config.read_text(encoding="utf-8"))
@@ -235,7 +225,7 @@ def build_knowledge_base(
         write_text(path_asset, content)
 
 
-def create_tag(repo: Repository):
+def create_tag(repo: Repository):  # pragma: no cover
     """
     Create a Git tag for the knowledge base release.
 
@@ -257,7 +247,7 @@ def create_tag(repo: Repository):
     )
 
 
-def create_release(repo: Repository):
+def create_release(repo: Repository):  # pragma: no cover
     """
     Create or get the GitHub release for publishing the knowledge base.
 
@@ -290,7 +280,7 @@ def upload_assets(
     release: Repository,
     paths: Paths,
     config: "Config",
-):
+):  # pragma: no cover
     """
     Upload knowledge base files as assets to the GitHub release.
 
@@ -298,7 +288,6 @@ def upload_assets(
     the release always has the latest versions of all document groups.
     """
     print("--- Publish all in one knowledge base")
-    file_label = "all_in_one_knowledge_base.txt"
     existing_assets: dict[str, GitReleaseAsset] = {
         asset.name: asset for asset in release.get_assets()
     }
@@ -307,11 +296,11 @@ def upload_assets(
             existing_assets[group.asset_name].delete_asset()
         release.upload_asset(
             path=f"{paths.dir_document_groups.joinpath(group.asset_name)}",
-            label=file_label,
+            label=group.asset_name,
         )
 
 
-def publish_knowledge_base(paths: Paths, config: "Config"):
+def publish_knowledge_base(paths: Paths, config: "Config"):  # pragma: no cover
     """
     Publish all document group files to GitHub releases.
 
@@ -325,11 +314,12 @@ def publish_knowledge_base(paths: Paths, config: "Config"):
     upload_assets(release=release, paths=paths, config=config)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     paths = Paths(
         dir_project_root=Path.cwd().absolute(),
         path_python_executable=Path(sys.executable).absolute(),
     )
+    # fmt: off
     print(f"dir_project_root                              = {paths.dir_project_root}")
     print(f"dir_bin                                       = {paths.dir_bin}")
     print(f"path_python_executable                        = {paths.path_python_executable}")
@@ -339,6 +329,7 @@ if __name__ == "__main__":
     print(f"dir_staging                                   = {paths.dir_staging}")
     print(f"dir_document_groups                           = {paths.dir_document_groups}")
     print(f"path_prompt_md                                = {paths.path_prompt_md}")
+    # fmt: on
     config = Config.from_json(paths.path_esclusive_ai_for_github_repo_config_json)
     build_knowledge_base(paths=paths, config=config)
     publish_knowledge_base(paths=paths, config=config)

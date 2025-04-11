@@ -25,15 +25,13 @@ from esclusive_ai_for_github_repo import __version__
 # ------------------------------------------------------------------------------
 # Prepare parameters
 # ------------------------------------------------------------------------------
-tag_name = __version__
-release_name = __version__
 dir_here = Path(__file__).absolute().parent
 repo_name = dir_here.name
 account_name = "easyscalecloud"
-release_asset_list = [
-    "esclusive_ai_for_github_repo.py",
-    "prompt.md",
-    "requirements.txt",
+path_asset_list = [
+    dir_here.joinpath("esclusive_ai_for_github_repo", "main.py"),
+    dir_here.joinpath("prompt.md"),
+    dir_here.joinpath("requirements.txt"),
 ]
 path_github_token = Path.home().joinpath(
     ".github",
@@ -246,6 +244,7 @@ def update_assets(
     filename_set = {path.name for path in path_list}
     for asset in release.get_assets():
         if asset.name in filename_set:
+            print(asset.delete_asset)
             asset.delete_asset()
     for path in path_list:
         print(f"Uploading asset {path.name!r} ...")
@@ -256,12 +255,28 @@ def update_assets(
 
 
 if __name__ == "__main__":
+    # Update the versioned tag and release
+    release_name, tag_name = __version__, __version__
     flag, tag, ref, release = update_release(
-        tag_name=tag_name, release_name=release_name
+        tag_name=tag_name,
+        release_name=release_name,
     )
     if release is None:
         release = get_git_release(release_name)
     update_assets(
         release=release,
-        path_list=[dir_here.joinpath(file_name) for file_name in release_asset_list],
+        path_list=[path_asset for path_asset in path_asset_list],
+    )
+
+    # Update the latest release
+    release_name, tag_name = "latest", "latest"
+    flag, tag, ref, release = update_release(
+        tag_name=tag_name,
+        release_name=release_name,
+    )
+    if release is None:
+        release = get_git_release(release_name)
+    update_assets(
+        release=release,
+        path_list=[path_asset for path_asset in path_asset_list],
     )

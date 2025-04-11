@@ -1,6 +1,7 @@
 # User Settings
+esclusive_ai_for_github_repo.egg-info/
+docs/source/**/index.md
 tmp/
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
