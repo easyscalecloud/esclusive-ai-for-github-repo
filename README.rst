@@ -28,7 +28,47 @@
 ------------------------------------------------------------------------------
 **The bridge between AI assistants and your unique codebase is finally here—with zero complexity**.
 
-Ever asked an AI assistant for help with your code only to receive generic suggestions that ignore your project's architecture and patterns? ESClusive AI solves this fundamental disconnect with a revolutionary approach that requires no special integrations, APIs, or technical expertise.
+Ever asked an AI assistant for help with your code only to receive generic suggestions that ignore your project's architecture and patterns? ESClusive AI solves this fundamental disconnect in just three simple steps:
+
+1. **Add this GitHub Action workflow file**
+
+.. code-block:: yaml
+
+    name: run_esclusive_ai_for_github_repo
+    on:
+      push:
+        branches: ["main"]
+    permissions:
+      contents: write # need this permission to publish knowledge base to GitHub Release
+    jobs:
+      run_esclusive_repo_ai:
+        uses: easyscalecloud/esclusive-ai-for-github-repo/.github/workflows/run.yml@main
+
+2. **Configure what goes in your knowledge base**
+
+.. code-block:: javascript
+
+    {
+        "document_groups": [
+            {
+                "name": "all",
+                "include": [
+                    "**/*.py", // Python files
+                    "**/*.md", // Markdown files
+                ],
+                "exclude": [
+                    ".venv",
+                    ".git",
+                ]
+            }
+        ]
+    }
+
+3. **Run the workflow, download your knowledge base file, and drag it into any AI chat**
+
+.. image:: ./docs/source/01-Make-Your-GitHub-Repo-AI-Ready-In-5-Minutes/img/github-release.png
+
+That's it! Your AI assistant now understands your entire codebase. See the complete `5-minute guide → <https://esclusive-ai-for-github-repo.readthedocs.io/en/latest/01-Make-Your-GitHub-Repo-AI-Ready-In-5-Minutes/index.html>`_
 
 
 🔍 The AI-Code Context Problem: Solved
