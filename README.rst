@@ -1,5 +1,5 @@
-.. image:: https://readthedocs.org/projects/esclusive-ai-for-github-repo/badge/?version=latest
-    :target: https://esclusive-ai-for-github-repo.readthedocs.io/en/latest/
+.. image:: https://readthedocs.org/projects/esclusive-ai-for-github-repo/badge/?version=stable
+    :target: https://esclusive-ai-for-github-repo.readthedocs.io/en/stable/
     :alt: Documentation Status
 
 .. image:: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/actions/workflows/main.yml/badge.svg
@@ -23,8 +23,8 @@
 
 ✨ ESClusive AI for GitHub Repo
 ==============================================================================
-.. image:: https://esclusive-ai-for-github-repo.readthedocs.io/en/latest/_static/esclusive_ai_for_github_repo-cover-1536x1024.png
-    :target: https://esclusive-ai-for-github-repo.readthedocs.io/en/latest/
+.. image:: https://esclusive-ai-for-github-repo.readthedocs.io/en/stable/_static/esclusive_ai_for_github_repo-cover-1536x1024.png
+    :target: https://esclusive-ai-for-github-repo.readthedocs.io/en/stable/
 
 
 🌉 Transform How AI Understands Your Code in 5 Minutes
@@ -153,6 +153,6 @@ Unlike other AI-code integration approaches that require API connections to exte
 
 🚀 Get Started in Just 5 Minutes
 ------------------------------------------------------------------------------
-See our `Quick Start Guide <https://esclusive-ai-for-github-repo.readthedocs.io/en/latest/01-Make-Your-GitHub-Repo-AI-Ready-In-5-Minutes/index.html>`_ to add ESClusive AI to your GitHub repository today.
+See our `Quick Start Guide <https://esclusive-ai-for-github-repo.readthedocs.io/en/stable/01-Make-Your-GitHub-Repo-AI-Ready-In-5-Minutes/index.html>`_ to add ESClusive AI to your GitHub repository today.
 
 Created with ❤️ by `EasyScaleCloud <https://www.easyscalecloud.com/products/esclusive-ai>`_
