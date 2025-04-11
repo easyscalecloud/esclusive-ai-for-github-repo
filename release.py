@@ -19,7 +19,7 @@ from github import (
     GitRelease,
 )
 
-from esclusive_ai_for_github_repo import __version__
+from esclusive_ai_for_github_repo.main import __version__
 
 
 # ------------------------------------------------------------------------------
