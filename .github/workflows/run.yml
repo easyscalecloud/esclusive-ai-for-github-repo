@@ -8,7 +8,7 @@ permissions:
   contents: write # need this permission to publish knowledge base to GitHub Release
 
 jobs:
-  esclusive_repo_ai:
+  run_esclusive_ai_for_github_repo:
     runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@v3" # https://github.com/marketplace/actions/checkout

@@ -11,4 +11,5 @@ sub packages and modules
     :maxdepth: 1
 
     api <api>
+    main <main>
     

@@ -1,4 +1,4 @@
-# Comprehensive github action yml reference: https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
+# Comprehensive Github Action yml reference: https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
 name: run_esclusive_ai_for_github_repo
 
 # Choose when workflow Run: https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/triggering-a-workflow
@@ -15,4 +15,6 @@ permissions:
 
 jobs:
   run_esclusive_repo_ai:
+    # Specify the version of ESClusive AI for GitHub Repo by: run.yml@X.Y.Z, e.g. 0.1.1
+    # where X.Y.Z is from our GitHub Release: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/releases
     uses: easyscalecloud/esclusive-ai-for-github-repo/.github/workflows/run.yml@main
