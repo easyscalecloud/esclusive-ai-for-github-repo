@@ -3,9 +3,9 @@
         {
             "name": "all",
             "include": [
-                "README.rst",
-                "esclusive_ai_for_github_repo.py",
-                ".github/workflows/**.*"
+                ".github/workflows/**.*",
+                "esclusive_ai_for_github_repo/main.py",
+                "README.rst"
             ],
             "exclude": [
                 ".venv/"
@@ -14,7 +14,7 @@
         {
             "name": "python",
             "include": [
-                "esclusive_ai_for_github_repo.py"
+                "esclusive_ai_for_github_repo/main.py"
             ],
             "exclude": [
             ]
