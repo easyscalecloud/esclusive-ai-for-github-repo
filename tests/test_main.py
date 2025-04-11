@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
-from pathlib import Path
+
 from esclusive_ai_for_github_repo.paths import dir_project_root
+from esclusive_ai_for_github_repo.main import (
+    Paths,
+    Config,
+    build_knowledge_base,
+)
 
 os.environ["CI"] = "true"
 os.environ["GITHUB_SERVER_URL"] = "https://github.com"
@@ -11,23 +15,9 @@ os.environ["GITHUB_REPOSITORY"] = "easyscalecloud/esclusive-ai-for-github-repo"
 os.environ["GITHUB_REF_NAME"] = "main"
 os.environ["GITHUB_TOKEN"] = "dummy-token"
 
-from esclusive_ai_for_github_repo.main import (
-    get_url_content,
-    write_text,
-    Paths,
-    DocumentGroup,
-    Config,
-    build_knowledge_base,
-    create_tag,
-    create_release,
-    upload_assets,
-    publish_knowledge_base,
-)
-
 def test_build_knowledge_base():
     paths = Paths(
         dir_project_root=dir_project_root,
-        path_python_executable=Path(sys.executable),
     )
     # prepare the downloaded files
     content = dir_project_root.joinpath("prompt.md").read_text()

@@ -38,7 +38,6 @@ Main workflow:
 
 import typing as T
 import os
-import sys
 import json
 import shutil
 import dataclasses
@@ -58,17 +57,45 @@ __maintainer_email__ = "sanhehu@easyscalecloud.com"
 
 release_name = "knowledge-base"
 
-IS_CI = "CI" in os.environ
 
-if IS_CI:
-    # See: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables
-    GITHUB_SERVER_URL = os.environ["GITHUB_SERVER_URL"]
-    GITHUB_REPOSITORY = os.environ["GITHUB_REPOSITORY"]
-    GITHUB_REF_NAME = os.environ["GITHUB_REF_NAME"]
-    ACC_NAME, REPO_NAME = GITHUB_REPOSITORY.split("/", 1)
-    # See: https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication
-    GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
+@dataclasses.dataclass
+class EnvVar:
+    """
+    Environment variables lazy loader.
 
+    - `Default environment variables
+ <https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables>`_
+    """
+    @property
+    def GITHUB_SERVER_URL(self) -> str:
+        return os.environ["GITHUB_SERVER_URL"]
+
+    @property
+    def GITHUB_REPOSITORY(self) -> str:
+        return os.environ["GITHUB_REPOSITORY"]
+
+    @property
+    def GITHUB_REF_NAME(self) -> str:
+        return os.environ["GITHUB_REF_NAME"]
+
+    @property
+    def ACC_NAME(self) -> str:
+        return self.GITHUB_REPOSITORY.split("/", 1)[0]
+
+    @property
+    def REPO_NAME(self) -> str:
+        return self.GITHUB_REPOSITORY.split("/", 1)[1]
+
+    @property
+    def GITHUB_TOKEN(self) -> str:
+        """
+        Ref:
+
+        - `Automatic token authentication <https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication>`_
+        """
+        return os.environ["GITHUB_TOKEN"]
+
+env_var = EnvVar()
 
 def get_url_content(url: str) -> str:  # pragma: no cover
     """
@@ -115,7 +142,6 @@ class Paths:
     """
 
     dir_project_root: Path = dataclasses.field()
-    path_python_executable: Path = dataclasses.field()
 
     @cached_property
     def dir_tmp(self) -> Path:
@@ -204,10 +230,10 @@ def build_knowledge_base(
         # Clean up the staging directory to get a fresh start
         shutil.rmtree(paths.dir_staging, ignore_errors=True)
         github_pipeline = GitHubPipeline(
-            domain=GITHUB_SERVER_URL,
-            account=ACC_NAME,
-            repo=REPO_NAME,
-            branch=GITHUB_REF_NAME,
+            domain=env_var.GITHUB_SERVER_URL,
+            account=env_var.ACC_NAME,
+            repo=env_var.REPO_NAME,
+            branch=env_var.GITHUB_REF_NAME,
             dir_repo=paths.dir_project_root,
             include=group.include,
             exclude=group.exclude,
@@ -308,8 +334,8 @@ def publish_knowledge_base(paths: Paths, config: "Config"):  # pragma: no cover
     release creation, and asset uploading for all document groups.
     """
     print("=== Publish knowledge base")
-    gh = Github(GITHUB_TOKEN)
-    repo = gh.get_repo(GITHUB_REPOSITORY)
+    gh = Github(env_var.GITHUB_TOKEN)
+    repo = gh.get_repo(env_var.GITHUB_REPOSITORY)
     release = create_release(repo)
     upload_assets(release=release, paths=paths, config=config)
 
@@ -317,13 +343,9 @@ def publish_knowledge_base(paths: Paths, config: "Config"):  # pragma: no cover
 if __name__ == "__main__":  # pragma: no cover
     paths = Paths(
         dir_project_root=Path.cwd().absolute(),
-        path_python_executable=Path(sys.executable).absolute(),
     )
     # fmt: off
     print(f"dir_project_root                              = {paths.dir_project_root}")
-    print(f"dir_bin                                       = {paths.dir_bin}")
-    print(f"path_python_executable                        = {paths.path_python_executable}")
-    print(f"path_bin_pip                                  = {paths.path_bin_pip}")
     print(f"path_esclusive_ai_for_github_repo_config_json = {paths.path_esclusive_ai_for_github_repo_config_json}")
     print(f"dir_tmp                                       = {paths.dir_tmp}")
     print(f"dir_staging                                   = {paths.dir_staging}")
@@ -333,3 +355,6 @@ if __name__ == "__main__":  # pragma: no cover
     config = Config.from_json(paths.path_esclusive_ai_for_github_repo_config_json)
     build_knowledge_base(paths=paths, config=config)
     publish_knowledge_base(paths=paths, config=config)
+    url = f"{env_var.GITHUB_SERVER_URL}/{env_var.GITHUB_REPOSITORY}/releases/tag/knowledge-base"
+    print(f"Your all-in-one knowledge base file is ready")
+    print(f"To download your 📙 knowledge file in GitHub release, Click this link 🔗 {url}")

@@ -1,5 +1,3 @@
-
-
 .. image:: https://readthedocs.org/projects/esclusive-ai-for-github-repo/badge/?version=latest
     :target: https://esclusive-ai-for-github-repo.readthedocs.io/en/latest/
     :alt: Documentation Status
@@ -66,4 +64,4 @@ Just drag and drop this file into any AI chat interface, and instantly your AI a
 - **Beyond Coding**: Perfect for training, onboarding, and knowledge transfer
 - **Open Source & Free Forever**: Use with both public and private GitHub repositories
 
-Created with ❤️ by [EasyScale Cloud](https://easyscalecloud.com)
+Created with ❤️ by `EasyScaleCloud <https://easyscalecloud.com>`_
