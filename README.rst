@@ -1,8 +1,24 @@
+
+
+.. image:: https://readthedocs.org/projects/esclusive-ai-for-github-repo/badge/?version=latest
+    :target: https://esclusive-ai-for-github-repo.readthedocs.io/en/latest/
+    :alt: Documentation Status
+
+.. image:: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/actions?query=workflow:CI
+
 .. image:: https://img.shields.io/badge/License-AGPL--3.0-blue.svg
     :target: https://www.gnu.org/licenses/agpl-3.0
 
 .. image:: https://img.shields.io/github/v/release/easyscalecloud/esclusive-ai-for-github-repo
     :target: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/releases
+
+.. image:: https://img.shields.io/badge/Release_History!--None.svg?style=social
+    :target: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/blob/main/release-history.rst
+
+.. image:: https://img.shields.io/badge/STAR_Me_on_GitHub!--None.svg?style=social
+    :target: https://github.com/easyscalecloud/esclusive-ai-for-github-repo
+
 
 ✨ ESClusive AI for GitHub Repo
 ==============================================================================
