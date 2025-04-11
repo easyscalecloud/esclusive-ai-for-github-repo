@@ -69,7 +69,7 @@ Ever asked an AI assistant for help with your code only to receive generic sugge
 
 3. **Run the workflow, download your knowledge base file, and drag it into any AI chat**
 
-.. image:: ./docs/source/01-Make-Your-GitHub-Repo-AI-Ready-In-5-Minutes/img/github-release.png
+.. image:: https://esclusive-ai-for-github-repo.readthedocs.io/en/latest/_images/github-release.png
 
 That's it! Your AI assistant now understands your entire codebase. See the complete `5-minute guide → <https://esclusive-ai-for-github-repo.readthedocs.io/en/latest/01-Make-Your-GitHub-Repo-AI-Ready-In-5-Minutes/index.html>`_
 
