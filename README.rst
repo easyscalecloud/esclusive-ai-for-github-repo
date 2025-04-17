@@ -1,5 +1,5 @@
 .. image:: https://img.shields.io/badge/Document--None.svg?logo=readthedocs&style=social
-    :target: https://esclusive-ai-for-github-repo.easyscalecloud.com/#transform-how-ai-understands-your-code-in-5-minutes
+    :target: https://esclusive-ai-for-github-repo.easyscalecloud.com/
     :alt: Documentation Status
 
 .. image:: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/actions/workflows/main.yml/badge.svg
@@ -24,7 +24,7 @@
 ✨ ESClusive AI for GitHub Repo
 ==============================================================================
 .. image:: https://esclusive-ai-for-github-repo.readthedocs.io/en/stable/_static/esclusive_ai_for_github_repo-cover-1536x1024.png
-    :target: https://esclusive-ai-for-github-repo.easyscalecloud.com/#transform-how-ai-understands-your-code-in-5-minutes
+    :target: https://esclusive-ai-for-github-repo.easyscalecloud.com/
 
 
 🌉 Transform How AI Understands Your Code in 5 Minutes
