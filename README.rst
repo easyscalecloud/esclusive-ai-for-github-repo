@@ -14,10 +14,10 @@
 .. image:: https://img.shields.io/github/v/release/easyscalecloud/esclusive-ai-for-github-repo
     :target: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/releases
 
-.. image:: https://img.shields.io/badge/Release_History!--None.svg?style=social
+.. image:: https://img.shields.io/badge/Release_History!--None.svg?logo=semanticrelease&style=social
     :target: https://github.com/easyscalecloud/esclusive-ai-for-github-repo/blob/main/release-history.rst
 
-.. image:: https://img.shields.io/badge/STAR_Me_on_GitHub!--None.svg?style=social
+.. image:: https://img.shields.io/badge/STAR_Me_on_GitHub!--None.svg?logo=github&style=social
     :target: https://github.com/easyscalecloud/esclusive-ai-for-github-repo
 
 
