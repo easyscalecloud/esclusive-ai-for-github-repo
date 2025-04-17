@@ -138,13 +138,32 @@ codecov_account = "easyscalecloud"
 # Create Codecov token in https://app.codecov.io/account/gh/${codecov_account}/access and put the token at
 # ``${HOME}/.codecov/github/${codecov_account}/${codecov_token_name}.txt``
 codecov_token_name = "sanhe-dev"
-# readthedocs.org user name (for documentation hosting)
-readthedocs_username = "escsanhe"
-# Readthedocs project name, usually it is the same as your project name
-readthedocs_project_name = "esclusive_ai_for_github_repo"
-# Create Readthedocs token in https://app.readthedocs.org/accounts/tokens/ and put the token at
-# ``${HOME}/.readthedocs/${readthedocs_username}/${readthedocs_token_name}.txt``
-readthedocs_token_name = "sanhe-dev"
+# The AWS profile you use for publishing to AWS CodeArtifact
+aws_region = "us-east-1"
+aws_codeartifact_profile = "esc_app_devops_us_east_1"
+# The AWS CodeArtifact domain you use
+# You should avoid using any hyphen and underscore in your domain name
+# You can find the exact name at: https://console.aws.amazon.com/codesuite/codeartifact/domains
+aws_codeartifact_domain = "esc"
+# The AWS CodeArtifact Python repository you use
+# You should use a-z, 0-9, and hyphen in your repository name
+# You can find the exact name at: https://console.aws.amazon.com/codesuite/codeartifact/repositories
+aws_codeartifact_repository = "esc-python"
+# If you want to use AWS S3 to store versioned document histories
+# fill in ``doc_host_aws_profile`` and ``doc_host_s3_bucket``
+# The AWS profile you use for doc site deployment (upload to S3)
+# leave empty string "" if you don't use it
+doc_host_aws_profile = "esc_app_devops_us_east_1"
+# The Aws S3 bucket you use to store you document files
+doc_host_s3_bucket = "esc-app-devops-us-east-1-doc-host"
+# CloudFlare account alias, it is an alias you made up for your account, and we need this to locate the token file
+cloudflare_account_alias = "esc"
+# Create CloudFlare User API token in https://dash.cloudflare.com/profile/api-tokens
+# Give it the following permission:
+# All accounts - Cloudflare Pages:Read, Cloudflare Pages:Edit
+# All users - Memberships:Read, User Details:Read
+# and put the token at ${HOME}/.cloudflare/${cloudflare_account_alias}/{cloudflare_pages_token_name}.txt"
+cloudflare_pages_token_name = "sanhe-dev"
 
 # Read: https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#declaring-the-build-backend
 [build-system]
