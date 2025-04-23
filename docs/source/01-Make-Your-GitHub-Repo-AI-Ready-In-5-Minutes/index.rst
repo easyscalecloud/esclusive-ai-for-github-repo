@@ -46,7 +46,7 @@ Create a file at ``.github/workflows/esclusive_ai_for_github_repo_config.json`` 
                 "exclude": [
                     ".venv",
                     ".git",
-                    "node_modules",
+                    "node_modules"
                 ]
             }
         ]
