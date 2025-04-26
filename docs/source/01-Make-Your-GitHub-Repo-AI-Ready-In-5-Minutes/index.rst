@@ -1,3 +1,5 @@
+.. _5minutes-setup-guide:
+
 🚀 Supercharge Your GitHub Repo with AI in Just 5 Minutes!
 ==============================================================================
 ESClusive AI for GitHub Repo bridges that gap by creating a smart knowledge base from your codebase that ANY AI can understand - no complicated setup, no expensive API tokens, just pure magic! ✨
@@ -52,11 +54,15 @@ Create a file at ``.github/workflows/esclusive_ai_for_github_repo_config.json`` 
         ]
     }
 
-Customize the ``include`` and ``exclude`` patterns to select exactly which files should be part of each knowledge base file. To learn about the include / exlucde pattern syntax, please refer to the `Include Exclude Patterns <https://pathpick.readthedocs.io/en/latest/01-Include-Exclude-Patterns/index.html>`_.
+Customize the ``include`` and ``exclude`` patterns to select exactly which files should be part of each knowledge base file. To learn about the include / exlucde pattern syntax, refer to the :ref:`include-exclude-patterns`.
 
 .. tip::
 
      Each "document_group" you define becomes a separate downloadable knowledge base file! You can create multiple document groups with different file selections to organize your knowledge base by file types, components, or any way that makes sense for your project.
+
+.. important::
+
+    The location and filename ``.github/workflows/esclusive_ai_for_github_repo_config.json`` must be exactly as specified. The automation source code in the `main.py <https://github.com/easyscalecloud/esclusive-ai-for-github-repo/blob/main/esclusive_ai_for_github_repo/main.py>`_ file specifically looks for this path and filename to locate the configuration.
 
 
 Step 3: Run the Action & Download Your Knowledge Base
@@ -76,6 +82,39 @@ Step 3: Run the Action & Download Your Knowledge Base
 Each document group you defined will have its own separate downloadable file. For example, If you defined groups "all", "python" and "document", you'll see three files: ``all.txt``, ``python.txt``, and ``document.txt``.
 
 .. image:: ./img/github-release.png
+
+
+🔍 Repository Setup Summary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Here's a quick overview of the ESClusive AI for GitHub Repo setup process:
+
+Folder Structure::
+
+    your-github-repo/
+    │
+    ├── .github/
+    │   ├── workflows/
+    │   │   ├── run_esclusive_ai_for_github_repo.yml
+    │   │   └── esclusive_ai_for_github_repo_config.json
+    │   └── ...
+    └── ...
+
+**Setup Workflow**:
+
+1. Create GitHub Action Workflow
+    - File: ``.github/workflows/run_esclusive_ai_for_github_repo.yml``
+    - Defines how and when the knowledge base generation will run
+2. Configure File Selection
+    - File: ``.github/workflows/esclusive_ai_for_github_repo_config.json``
+    - Specify which files to include or exclude in your knowledge base
+    - Customize the scope of your AI knowledge base
+3. Trigger Knowledge Base Generation
+    - Manual Trigger: Click "Run workflow" in GitHub Actions
+    - Automatic Trigger: Uncomment push/pull_request events in the workflow file to auto-generate on code changes
+
+.. tip::
+
+    💡 Pro Tip: Start with a broad file selection, then refine your configuration as you become more familiar with the tool.
 
 
 🚀 Using Your AI Knowledge Base
